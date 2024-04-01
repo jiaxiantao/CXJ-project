@@ -23,7 +23,7 @@ export default defineComponent({
             state.showHeader ? classNames["expand"] : classNames["fold"],
           ]}
         >
-          <div class={classNames["header-left"]}>logo</div>
+          {/* <div class={classNames["header-left"]}>logo</div> */}
           <span class={classNames["header-title"]}>无人农机示范基地</span>
           <div class={classNames["header-right"]}>
             <span class={classNames["info-name"]}>刘俊伯</span>
