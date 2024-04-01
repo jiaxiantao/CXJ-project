@@ -1,0 +1,60 @@
+.form-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+
+  .form-panel-content {
+    width: 200px;
+    height: 0;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    background-color: rgba(15, 34, 122, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    overflow: auto;
+    transition: all 0.5s;
+    max-height: 100%;
+
+    &.fold {
+      height: 0;
+    }
+
+    &.expand {
+      height: 200px;
+    }
+  }
+
+  .fold-wrapper {
+    cursor: pointer;
+    width: 40px;
+    height: 16px;
+    background-color: rgba(15, 34, 122);
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .arrow {
+      width: 10px;
+      height: 10px;
+      color: #fff;
+      transition: all 0.5s;
+
+      &.fold {
+        transform: rotateZ(-90deg);
+      }
+
+      &.expand {
+        transform: rotateZ(90deg);
+      }
+    }
+  }
+}
+
+.custom-select .el-input__inner {
+  color: white;
+}

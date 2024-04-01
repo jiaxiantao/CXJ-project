@@ -1,0 +1,43 @@
+.top-header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 28px;
+  background-color: var(--color-bg-panel);
+  border-bottom-right-radius: 28px;
+  border-bottom-left-radius: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: all 0.5s;
+  &.fold {
+    height: 0;
+  }
+  &.expand {
+    height: 28px;
+  }
+  .header-title {
+    color: var(--color-white);
+    font-size: 14px;
+  }
+  .header-left {
+    position: absolute;
+    left: 20px;
+    color: var(--color-white);
+    font-size: 10px;
+  }
+  .header-right {
+    position: absolute;
+    right: 20px;
+    color: var(--color-white);
+    font-size: 8px;
+    span {
+      margin: 0 4px;
+    }
+    .exit {
+      cursor: pointer;
+    }
+  }
+}
