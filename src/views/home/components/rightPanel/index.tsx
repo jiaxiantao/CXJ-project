@@ -33,7 +33,7 @@ export default defineComponent({
       state.showRightPanel = !state.showRightPanel;
     };
 
-    const handleClick = () => {};
+    const handleClick = () => { };
 
     // 创建请求配置对象
     const headerConfig = {
@@ -58,7 +58,21 @@ export default defineComponent({
           headerConfig
         )
         .then((response: { data: any }) => {
-          console.log(response.data.data.gnssdifferentialstate);
+          if (response.data.data.devicenum == "") {
+            response.data.data.gnssdifferentialstate = "--";
+            response.data.data.sim1SIGNALSTRENGTH = "--";
+            response.data.data.sim2SIGNALSTRENGTH = "--";
+            response.data.data.navigationsystemstatusinformation = "--";
+            response.data.data.operationmode = "--";
+            response.data.data.operationtype = "--";
+            response.data.data.jobnameid = "--";
+            response.data.data.mu = "--";
+            response.data.data.realtimefixlongitude = "--";
+            response.data.data.realtimelocationlatitude = "--";
+            response.data.data.currentjobspeed = "--";
+            response.data.data.aaaa = "--";
+            return
+          }
           // 差分信号状态
           if (response.data.data.gnssdifferentialstate == 0) {
             data.gnssdifferentialstate = "差分异常，卫星红色";
@@ -69,6 +83,7 @@ export default defineComponent({
           } else if (response.data.data.gnssdifferentialstate == 3) {
             data.gnssdifferentialstate = "无效数据";
           }
+          
           // SIM卡1状态
           if (response.data.data.sim1SIGNALSTRENGTH == 0) {
             data.sim1SIGNALSTRENGTH = "显示 0 格";
