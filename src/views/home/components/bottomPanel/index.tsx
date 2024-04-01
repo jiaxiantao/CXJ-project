@@ -104,7 +104,9 @@ export default defineComponent({
 
     onMounted(() => {
       setTimeout(() => {
-        state.showBottomPanel = true;
+        if (window.innerHeight > 600) {
+          state.showBottomPanel = true;
+        }
       }, 0);
     });
 

@@ -2,6 +2,7 @@ import { defineComponent, onMounted, reactive, ref, unref, watch } from "vue";
 import classNames from "./index.module.less";
 import { DArrowLeft, DArrowRight } from "@element-plus/icons-vue";
 import axios from "axios";
+import { ElLoading } from "element-plus";
 
 export default defineComponent({
   props: {
@@ -43,6 +44,11 @@ export default defineComponent({
     };
 
     const getInfo = (deviceNo: string) => {
+      const loading = ElLoading.service({
+        lock: true,
+        text: "Loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
       axios
         .post(
           "http://cloud.lovol.com:3000/api/unpiloted/v2/rest/unpiloted2/getNavData",
@@ -187,6 +193,9 @@ export default defineComponent({
         .catch((error) => {
           console.error("Error fetching data:", error);
           // 处理错误
+        })
+        .finally(() => {
+          loading.close();
         });
     };
 

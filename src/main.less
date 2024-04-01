@@ -17,6 +17,12 @@
 }
 
 :root {
+  --el-font-size-base: 8px;
+  --el-text-color-regular: #fff;
+  --el-component-size: 1rem;
+  --el-fill-color-blank: rgba(15, 34, 122, 0.6);
+  --el-loading-spinner-size: calc(2.625rem / 2);
+  --el-loading-fullscreen-spinner-size: calc(3.125rem / 2);
 }
 
 body {
@@ -162,4 +168,7 @@ img {
   pointer-events: none;
   -webkit-touch-callout: none;
   user-select: none;
+}
+.el-loading-spinner .el-loading-text {
+  font-size: 0.5rem;
 }
