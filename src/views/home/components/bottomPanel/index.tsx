@@ -30,7 +30,7 @@ export default defineComponent({
       showBottomPanel: false,
       showFromPanel: false,
       selectedRow: {
-        equipmentCoding: "VT202392200178",
+        equipmentCoding: null,
       },
       tableData: [
         {
