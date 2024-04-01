@@ -30,6 +30,13 @@
       padding: 8px;
       overflow: auto;
       box-sizing: border-box;
+      .form-submit-wrapper {
+        margin-top: 8px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
       :global {
         .el-form-item {
           margin-bottom: 4px;
@@ -43,6 +50,9 @@
         }
         .el-button {
           height: 1rem;
+        }
+        .el-select-dropdown__wrap {
+          background-color: rgba(15, 34, 122, 0.6);
         }
       }
     }

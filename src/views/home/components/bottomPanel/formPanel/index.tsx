@@ -25,6 +25,10 @@ export default defineComponent({
       changeFormPanel();
     };
 
+    const onCancel = () => {
+      changeFormPanel();
+    };
+
     onMounted(() => {});
 
     return () => {
@@ -123,10 +127,12 @@ export default defineComponent({
                   <el-input v-model={state.formData.desc} type="textarea" />
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" onClick={onSubmit}>
-                    保存
-                  </el-button>
-                  <el-button>取消</el-button>
+                  <div class={classNames["form-submit-wrapper"]}>
+                    <el-button type="primary" onClick={onSubmit}>
+                      保存
+                    </el-button>
+                    <el-button onClick={onCancel}>取消</el-button>
+                  </div>
                 </el-form-item>
               </el-form>
             </div>
