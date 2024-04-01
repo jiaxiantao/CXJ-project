@@ -38,6 +38,7 @@ export default defineComponent({
     const headerConfig = {
       headers: {
         bizapiauth: "xjnd@-@fT1T#$a198bcdc2603954672$78Sm^bDbbe02ce88c66ec95",
+        "Content-Type": "application/x-www-form-urlencoded",
       },
     };
 
@@ -192,6 +193,7 @@ export default defineComponent({
     onMounted(() => {
       setTimeout(() => {
         state.showRightPanel = true;
+        getInfo(props.deviceNo || "");
       }, 0);
     });
 

@@ -30,13 +30,13 @@ export default defineComponent({
       showBottomPanel: false,
       showFromPanel: false,
       selectedRow: {
-        equipmentCoding: "",
+        equipmentCoding: "VT202392200178",
       },
       tableData: [
         {
           equipmentType: "收货机",
-          equipmentName: "VT04202311080001",
-          equipmentCoding: "VT042023110800001",
+          equipmentName: "VT202392200178",
+          equipmentCoding: "VT202392200178",
           equipmentStatus: "离线",
         },
         {
