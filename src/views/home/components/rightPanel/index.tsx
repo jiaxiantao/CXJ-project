@@ -3,10 +3,15 @@ import classNames from "./index.module.less";
 import { DArrowLeft, DArrowRight } from "@element-plus/icons-vue";
 import axios from "axios";
 import { ElLoading } from "element-plus";
+import { ServiceType } from '../bottomPanel/index';
+import { number } from "echarts";
 
 export default defineComponent({
   props: {
-    deviceNo: String,
+    selectedRow: {
+      type: Object,
+      default: {}
+    }
   },
   setup(props) {
     const state = reactive({
@@ -35,20 +40,28 @@ export default defineComponent({
 
     const handleClick = () => { };
 
-    // 创建请求配置对象
-    const headerConfig = {
-      headers: {
-        bizapiauth: "xjnd@-@fT1T#$a198bcdc2603954672$78Sm^bDbbe02ce88c66ec95",
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    };
+    const getInfo = (selectedRow: Record<string, any>) => {
+      if (selectedRow.serviceType === ServiceType.LEIWO) {
+        getLeiWoInfo(selectedRow.equipmentCoding);
+      }
+      else if (selectedRow.serviceType === ServiceType.ZHONGKE) {
+        getZhongKeInfo(selectedRow.equipmentCoding);
+      }
+    }
 
-    const getInfo = (deviceNo: string) => {
+    const getLeiWoInfo = (deviceNo: string) => {
       const loading = ElLoading.service({
         lock: true,
         text: "Loading",
         background: "rgba(0, 0, 0, 0.7)",
       });
+      // 创建请求配置对象
+      const headerConfig = {
+        headers: {
+          bizapiauth: "xjnd@-@fT1T#$a198bcdc2603954672$78Sm^bDbbe02ce88c66ec95",
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      };
       axios
         .post(
           "http://cloud.lovol.com:3000/api/unpiloted/v2/rest/unpiloted2/getNavData",
@@ -83,7 +96,7 @@ export default defineComponent({
           } else if (response.data.data.gnssdifferentialstate == 3) {
             data.gnssdifferentialstate = "无效数据";
           }
-          
+
           // SIM卡1状态
           if (response.data.data.sim1SIGNALSTRENGTH == 0) {
             data.sim1SIGNALSTRENGTH = "显示 0 格";
@@ -214,15 +227,49 @@ export default defineComponent({
         });
     };
 
+    const getZhongKeInfo = (mcSn: string) => {
+      const loading = ElLoading.service({
+        lock: true,
+        text: "Loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
+      // 创建请求配置对象
+      const headerConfig = {
+        headers: {
+          token: "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNjNfZGV2IiwidXNlciI6IntcIm1hbmFnZXJJZFwiOjE2MyxcIm1uTG9nTmFtZVwiOlwibm9uZ2RhXCIsXCJtbk5pY2tuYW1lXCI6XCLmlrDlhpzlpKdcIixcInV0UGF0aFwiOlwiLzEvODMvNDkvXCJ9IiwiaWF0IjoxNzExOTQzOTg0LCJqdGkiOiI4Nzk4NDM2Yy04NDQ4LTQzZGItYWYxNC00MzMxZTA2ZmQ5ZDAifQ.kOZwyNV4XQuGq1lbdgDUuXAg3bLEwu5t7DC_btXofMw",
+          "Content-Type": "multipart/form-data",
+          Host: 'tb.aiforcetech.com:8081',
+        },
+      };
+      axios
+        .post(
+          "http://tb.aiforcetech.com:8081/abmapi/machine/getMachineLiveBySn",
+          {
+            mcSn,
+          },
+          headerConfig
+        )
+        .then((response: { data: any }) => {
+
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+          // 处理错误
+        })
+        .finally(() => {
+          loading.close();
+        });
+    };
+
     onMounted(() => {
       setTimeout(() => {
         state.showRightPanel = true;
-        getInfo(props.deviceNo || "");
+        // getLeiWoInfo(props.deviceNo || "");
       }, 0);
     });
 
     watch(
-      () => props.deviceNo,
+      () => props.selectedRow,
       (value) => {
         value && getInfo(value);
       }

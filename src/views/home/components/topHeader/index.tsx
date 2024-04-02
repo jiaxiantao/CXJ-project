@@ -26,7 +26,7 @@ export default defineComponent({
           {/* <div class={classNames["header-left"]}>logo</div> */}
           <span class={classNames["header-title"]}>无人农机示范基地</span>
           <div class={classNames["header-right"]}>
-            <span class={classNames["info-name"]}>刘俊伯</span>
+            <span class={classNames["info-name"]}>ZL</span>
             <span class={classNames["exit"]}>退出</span>
           </div>
         </div>

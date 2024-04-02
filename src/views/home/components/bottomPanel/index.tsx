@@ -24,6 +24,11 @@ import {
 import FormPanel from "./formPanel";
 import RightPanel from "../rightPanel";
 
+export enum ServiceType {
+  LEIWO = 0,
+  ZHONGKE = 1,
+}
+
 export default defineComponent({
   setup(props) {
     const state = reactive({
@@ -34,58 +39,67 @@ export default defineComponent({
       },
       tableData: [
         {
-          equipmentType: "收货机",
+          equipmentType: "雷沃拖拉机",
           equipmentName: "VT202392100016",
           equipmentCoding: "VT202392100016",
           equipmentStatus: "离线",
+          serviceType: ServiceType.LEIWO,
         },
         {
-          equipmentType: "水稻机",
+          equipmentType: "中科拖拉机",
           equipmentName: "0036测试导航",
-          equipmentCoding: "VT042023110800036",
+          equipmentCoding: "292300012",
           equipmentStatus: "在线",
+          serviceType: ServiceType.ZHONGKE,
         },
         {
-          equipmentType: "拖拉机",
+          equipmentType: "雷沃拖拉机",
           equipmentName: "VT202382600040",
           equipmentCoding: "VT202382600040",
           equipmentStatus: "离线",
+          serviceType: ServiceType.LEIWO,
         },
         {
-          equipmentType: "水稻机",
+          equipmentType: "雷沃水稻机",
           equipmentName: "P平台动力换挡联调导航",
           equipmentCoding: "VT202382600019",
           equipmentStatus: "离线",
+          serviceType: ServiceType.LEIWO,
         },
         {
-          equipmentType: "插秧机",
-          equipmentName: "华测插秧机",
+          equipmentType: "雷沃插秧机",
+          equipmentName: "YUOK956插秧机",
           equipmentCoding: "110TS01374000021",
           equipmentStatus: "在线",
+          serviceType: ServiceType.LEIWO,
         },
         {
-          equipmentType: "水稻机",
+          equipmentType: "雷沃水稻机",
           equipmentName: "L2水稻机4LZ-7G1",
           equipmentCoding: "VT042023110800004",
           equipmentStatus: "离线",
+          serviceType: ServiceType.LEIWO,
         },
         {
-          equipmentType: "小麦机",
+          equipmentType: "雷沃小麦机",
           equipmentName: "63321GME8N323817",
           equipmentCoding: "VT042023110800012",
           equipmentStatus: "离线",
+          serviceType: ServiceType.LEIWO,
         },
         {
-          equipmentType: "小麦机",
+          equipmentType: "雷沃小麦机",
           equipmentName: "0002测试导航",
           equipmentCoding: "VT042023110800002",
           equipmentStatus: "离线",
+          serviceType: ServiceType.LEIWO,
         },
         {
-          equipmentType: "插秧机",
+          equipmentType: "雷沃插秧机",
           equipmentName: "358081插秧机",
           equipmentCoding: "3580184",
           equipmentStatus: "离线",
+          serviceType: ServiceType.LEIWO,
         },
       ],
     });
@@ -286,7 +300,7 @@ export default defineComponent({
               />
             </div>
           </div>
-          <RightPanel deviceNo={state.selectedRow.equipmentCoding} />
+          <RightPanel selectedRow={state.selectedRow} />
         </>
       );
     };

@@ -17,6 +17,17 @@ export default defineConfig((config) => {
     build: {
       minify: isDevelopment ? false : "esbuild", //测试环境不压缩
     },
+    server: {
+      host: "0.0.0.0",
+      proxy: {
+        '/abmapi': {
+          target: 'http://tb.aiforcetech.com:8081',
+          changeOrigin: true,
+          // rewrite: (path) => path.replace(/^\/api/, ''),
+        }
+      },
+      cors: true,
+    },
     plugins: [
       // visualizer() as PluginOption,
       // 为不支持module的浏览器构建旧版本
@@ -32,9 +43,6 @@ export default defineConfig((config) => {
         ],
       }),
     ],
-    server: {
-      host: "0.0.0.0",
-    },
     define: {
       __APP_BUILD_TIME__: JSON.stringify(dayjs().utcOffset(8).format("YYYY-MM-DD HH:mm:ss").toString()),
     },
