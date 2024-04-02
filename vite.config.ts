@@ -20,11 +20,11 @@ export default defineConfig((config) => {
     server: {
       host: "0.0.0.0",
       proxy: {
-        '/abmapi': {
-          target: 'http://tb.aiforcetech.com:8081',
+        "/abmapi/machine/getMachineLiveBySn": {
+          target: "http://tb.aiforcetech.com:8081",
           changeOrigin: true,
-          // rewrite: (path) => path.replace(/^\/api/, ''),
-        }
+          rewrite: (path) => path.replace(/^\/api/, ""),
+        },
       },
       cors: true,
     },
@@ -44,7 +44,9 @@ export default defineConfig((config) => {
       }),
     ],
     define: {
-      __APP_BUILD_TIME__: JSON.stringify(dayjs().utcOffset(8).format("YYYY-MM-DD HH:mm:ss").toString()),
+      __APP_BUILD_TIME__: JSON.stringify(
+        dayjs().utcOffset(8).format("YYYY-MM-DD HH:mm:ss").toString()
+      ),
     },
     resolve: {
       alias: {
