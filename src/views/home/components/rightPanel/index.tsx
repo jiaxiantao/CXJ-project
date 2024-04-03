@@ -3,15 +3,15 @@ import classNames from "./index.module.less";
 import { DArrowLeft, DArrowRight } from "@element-plus/icons-vue";
 import axios from "axios";
 import { ElLoading } from "element-plus";
-import { ServiceType } from "../bottomPanel/index";
+import { ServiceType } from '../bottomPanel/index';
 import { number } from "echarts";
 
 export default defineComponent({
   props: {
     selectedRow: {
       type: Object,
-      default: {},
-    },
+      default: {}
+    }
   },
   setup(props) {
     const state = reactive({
@@ -32,21 +32,36 @@ export default defineComponent({
       realtimelocationlatitude: "--",
       currentjobspeed: "--",
       aaaa: "--",
+
+      onlineStatus:"--",
+      roll:"--",
+      impPos:"--",
+      lon:"--",
+      speed:"--",
+      pitch:"--",
+      sn:"--",
+      lat:"--",
+      seq:"--",
+      alt:"--",
+      rtk:"--",
+      rnd:"--",
+      pto:"--",
     });
 
     const changeRightPanel = () => {
       state.showRightPanel = !state.showRightPanel;
     };
 
-    const handleClick = () => {};
+    const handleClick = () => { };
 
     const getInfo = (selectedRow: Record<string, any>) => {
       if (selectedRow.serviceType === ServiceType.LEIWO) {
         getLeiWoInfo(selectedRow.equipmentCoding);
-      } else if (selectedRow.serviceType === ServiceType.ZHONGKE) {
+      }
+      else if (selectedRow.serviceType === ServiceType.ZHONGKE) {
         getZhongKeInfo(selectedRow.equipmentCoding);
       }
-    };
+    }
 
     const getLeiWoInfo = (deviceNo: string) => {
       const loading = ElLoading.service({
@@ -70,21 +85,6 @@ export default defineComponent({
           headerConfig
         )
         .then((response: { data: any }) => {
-          if (response.data.data.devicenum == "") {
-            response.data.data.gnssdifferentialstate = "--";
-            response.data.data.sim1SIGNALSTRENGTH = "--";
-            response.data.data.sim2SIGNALSTRENGTH = "--";
-            response.data.data.navigationsystemstatusinformation = "--";
-            response.data.data.operationmode = "--";
-            response.data.data.operationtype = "--";
-            response.data.data.jobnameid = "--";
-            response.data.data.mu = "--";
-            response.data.data.realtimefixlongitude = "--";
-            response.data.data.realtimelocationlatitude = "--";
-            response.data.data.currentjobspeed = "--";
-            response.data.data.aaaa = "--";
-            return;
-          }
           // 差分信号状态
           if (response.data.data.gnssdifferentialstate == 0) {
             data.gnssdifferentialstate = "差分异常，卫星红色";
@@ -215,7 +215,20 @@ export default defineComponent({
           // 发动机转速
           data.aaaa = response.data.data.aaaa + " rpm";
 
-          // 处理响应数据
+          // 清除中科数据
+            data.onlineStatus = "--";
+            data.roll = "--";
+            data.impPos = "--";
+            data.lon = "--";
+            data.speed = "--";
+            data.pitch = "--";
+            data.sn = "--";
+            data.lat = "--";
+            data.seq = "--";
+            data.alt = "--";
+            data.rtk = "--";
+            data.rnd = "--";
+            data.pto = "--";
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
@@ -232,25 +245,66 @@ export default defineComponent({
         text: "Loading",
         background: "rgba(0, 0, 0, 0.7)",
       });
-      // 创建请求配置对象
-      const headerConfig = {
-        headers: {
-          token:
-            "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNjNfZGV2IiwidXNlciI6IntcIm1hbmFnZXJJZFwiOjE2MyxcIm1uTG9nTmFtZVwiOlwibm9uZ2RhXCIsXCJtbk5pY2tuYW1lXCI6XCLmlrDlhpzlpKdcIixcInV0UGF0aFwiOlwiLzEvODMvNDkvXCJ9IiwiaWF0IjoxNzExOTQzOTg0LCJqdGkiOiI4Nzk4NDM2Yy04NDQ4LTQzZGItYWYxNC00MzMxZTA2ZmQ5ZDAifQ.kOZwyNV4XQuGq1lbdgDUuXAg3bLEwu5t7DC_btXofMw",
-          "Content-Type": "multipart/form-data",
-          Host: "tb.aiforcetech.com:8081",
-        },
-      };
+      
+      axios.get('http://47.109.80.153:8080/getZhongKeMachineByDeviceNo', {
+        params: {
+          mcSn: mcSn,
+          token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNjNfZGV2IiwidXNlciI6IntcIm1hbmFnZXJJZFwiOjE2MyxcIm1uTG9nTmFtZVwiOlwibm9uZ2RhXCIsXCJtbk5pY2tuYW1lXCI6XCLmlrDlhpzlpKdcIixcInV0UGF0aFwiOlwiLzEvODMvNDkvXCJ9IiwiaWF0IjoxNzExOTQzOTg0LCJqdGkiOiI4Nzk4NDM2Yy04NDQ4LTQzZGItYWYxNC00MzMxZTA2ZmQ5ZDAifQ.kOZwyNV4XQuGq1lbdgDUuXAg3bLEwu5t7DC_btXofMw'
+        }
+      })
+        .then((response: { data: any }) => {
+          
+          if (response.data.data.onlineStatus == 10) {
+            data.onlineStatus = "未上线";
+          }else if (response.data.data.onlineStatus == 11) {
+            data.onlineStatus = "在线";
+          }else if (response.data.data.onlineStatus == 12) {
+            data.onlineStatus = "掉线";
+          }
 
-      axios
-        .post(
-          `/abmapi/machine/getMachineLiveBySn`,
-          {
-            mcSn,
-          },
-          headerConfig
-        )
-        .then((response: { data: any }) => {})
+          data.roll =response.data.data.roll + " 度";
+
+          data.impPos =response.data.data.impPos;
+
+          data.lon =response.data.data.lon;
+
+          data.speed =response.data.data.speed+ " km/h";
+
+          data.pitch =response.data.data.pitch + " 度";
+
+          data.sn =response.data.data.sn;
+
+          data.lat =response.data.data.lat;
+
+          data.seq =response.data.data.seq;
+
+          data.alt =response.data.data.alt;
+          
+          if (response.data.data.onlineStatus == 1) {
+            data.rtk = "已连接";
+          }else if (response.data.data.onlineStatus == 4) {
+            data.rtk = "定位成功";
+          }
+
+          data.rnd =response.data.data.rnd;
+
+          data.pto =response.data.data.pto;
+
+          // 清除雷沃数据
+          data.gnssdifferentialstate = "--";
+          data.sim1SIGNALSTRENGTH = "--";
+          data.sim2SIGNALSTRENGTH = "--";
+          data.navigationsystemstatusinformation = "--";
+          data.operationmode = "--";
+          data.operationtype = "--";
+          data.jobnameid = "--";
+          data.mu = "--";
+          data.realtimefixlongitude = "--";
+          data.realtimelocationlatitude = "--";
+          data.currentjobspeed = "--";
+          data.aaaa = "--";
+          
+        })
         .catch((error) => {
           console.error("Error fetching data:", error);
           // 处理错误
@@ -393,6 +447,113 @@ export default defineComponent({
                         class={classNames["form-value"]}
                       ></div>
                     </div>
+
+                    <div class={classNames["form-row"]}>
+                      <div class={classNames["form-label"]}>农机在线状态</div>
+                      <div
+                        v-html={data.onlineStatus}
+                        class={classNames["form-value"]}
+                      ></div>
+                    </div>
+
+                    <div class={classNames["form-row"]}>
+                      <div class={classNames["form-label"]}>横滚角</div>
+                      <div
+                        v-html={data.roll}
+                        class={classNames["form-value"]}
+                      ></div>
+                    </div>
+
+                    <div class={classNames["form-row"]}>
+                      <div class={classNames["form-label"]}>农具位置</div>
+                      <div
+                        v-html={data.impPos}
+                        class={classNames["form-value"]}
+                      ></div>
+                    </div>
+
+                    <div class={classNames["form-row"]}>
+                      <div class={classNames["form-label"]}>经度</div>
+                      <div
+                        v-html={data.lon}
+                        class={classNames["form-value"]}
+                      ></div>
+                    </div>
+
+                    <div class={classNames["form-row"]}>
+                      <div class={classNames["form-label"]}>设备移动速度</div>
+                      <div
+                        v-html={data.speed}
+                        class={classNames["form-value"]}
+                      ></div>
+                    </div>
+
+                    <div class={classNames["form-row"]}>
+                      <div class={classNames["form-label"]}>仰望角</div>
+                      <div
+                        v-html={data.pitch}
+                        class={classNames["form-value"]}
+                      ></div>
+                    </div>
+
+                    <div class={classNames["form-row"]}>
+                      <div class={classNames["form-label"]}>农机SN</div>
+                      <div
+                        v-html={data.sn}
+                        class={classNames["form-value"]}
+                      ></div>
+                    </div>
+
+                    <div class={classNames["form-row"]}>
+                      <div class={classNames["form-label"]}>纬度</div>
+                      <div
+                        v-html={data.lat}
+                        class={classNames["form-value"]}
+                      ></div>
+                    </div>
+
+                    <div class={classNames["form-row"]}>
+                      <div class={classNames["form-label"]}>序列号</div>
+                      <div
+                        v-html={data.seq}
+                        class={classNames["form-value"]}
+                      ></div>
+                    </div>
+
+                    <div class={classNames["form-row"]}>
+                      <div class={classNames["form-label"]}>海拔高度</div>
+                      <div
+                        v-html={data.alt}
+                        class={classNames["form-value"]}
+                      ></div>
+                    </div>
+
+                    <div class={classNames["form-row"]}>
+                      <div class={classNames["form-label"]}>定位设备状态</div>
+                      <div
+                        v-html={data.rtk}
+                        class={classNames["form-value"]}
+                      ></div>
+                    </div>
+
+                    <div class={classNames["form-row"]}>
+                      <div class={classNames["form-label"]}>rnd挡位状态</div>
+                      <div
+                        v-html={data.rnd}
+                        class={classNames["form-value"]}
+                      ></div>
+                    </div>
+
+                    <div class={classNames["form-row"]}>
+                      <div class={classNames["form-label"]}>PTO状态</div>
+                      <div
+                        v-html={data.pto}
+                        class={classNames["form-value"]}
+                      ></div>
+                    </div>
+
+
+
                   </div>
                 </el-tab-pane>
                 <el-tab-pane label="作业信息" name="second">
